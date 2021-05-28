@@ -1,0 +1,25 @@
+{
+  "name": "token",
+  "version": "1.0.0",
+  "description": "Automated Buying Token with Puppeteer",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --timeout=30000 ./tests",
+    "test1": "mocha --timeout=30000 ./firefox_tests"
+  },
+  
+  "keywords": [
+    "Puppeteer",
+    "Mocha",
+    "Chai",
+    "Automation"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chai": "^4.3.4",
+    "mocha": "^8.4.0",
+    "prettier": "^2.3.0",
+    "puppeteer": "^9.1.1"
+  }
+}
