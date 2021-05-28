@@ -35,6 +35,7 @@ describe('First Test', () => {
         // input token amount in Eth
         const ethAmountSelector = '#swap-currency-input > div > div.sc-33m4yg-4.hPbfqi > input'
         // issue entering ETH purchase amount. solved by adding SloMo:7. cannot be faster than that
+        await (await page.waitForSelector(ethAmountSelector)).click()
         await page.type(ethAmountSelector, amountEth)
         // displays the amount bought in Dollars
         const amountEthSelector = '#swap-currency-input > div > div.sc-33m4yg-5.sc-33m4yg-6.dyYDN > div > div.sc-kpOJdX.jLZfGp.css-djrxae > span'

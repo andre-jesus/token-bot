@@ -1,0 +1,11 @@
+{
+    "version":"1.0",
+    "configurations":[
+        {
+            "name":"token",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceRoot}/main.js"
+        }
+    ]
+}
