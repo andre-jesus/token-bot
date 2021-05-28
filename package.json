@@ -7,7 +7,6 @@
     "test": "mocha --timeout=30000 ./tests",
     "test1": "mocha --timeout=30000 ./firefox_tests"
   },
-  
   "keywords": [
     "Puppeteer",
     "Mocha",
@@ -21,5 +20,16 @@
     "mocha": "^8.4.0",
     "prettier": "^2.3.0",
     "puppeteer": "^9.1.1"
-  }
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andre-jesus/token-bot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/andre-jesus/token-bot/issues"
+  },
+  "homepage": "https://github.com/andre-jesus/token-bot#readme"
 }
