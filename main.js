@@ -25,7 +25,7 @@ async function main () {
     await (await page.waitForXPath(importBtn)).click()
     const confImportBtn = '/html/body/reach-portal/div[3]/div/div/div/div/div[3]/button'
     await (await page.waitForXPath(confImportBtn)).click()
-    console.log({tokenName},'Imported')
+    console.log(tokenName,'Imported')
 
     // input token amount in Eth
     const ethAmountSelector = '#swap-currency-input > div > div.sc-33m4yg-4.hPbfqi > input'
@@ -40,17 +40,17 @@ async function main () {
     console.log('ETH',amountEth,'= $',ethValueInDollars)
 
     // displays amount of new token bought
-    const newTokenAmountSelector = '#swap-currency-output > div > div.sc-33m4yg-4.hPbfqi > input' 
-    const newTokenDollarSelector = '#swap-currency-output > div > div.sc-33m4yg-5.sc-33m4yg-6.dyYDN > div > div.sc-kpOJdX.jLZfGp.css-djrxae > span.sc-19p08fx-0.cszVKF'
-    let newTokenToDollars = await page.$(newTokenDollarSelector)
-    let newTokenAmount = await page.evaluate(el => el.textContent, newTokenAmountSelector)
-    let newTokenValueInDollars = await page.evaluate(el => el.textContent, newTokenToDollars)
-    console.log('NewToken',newTokenAmount,'= $',newTokenValueInDollars)
+    // const newTokenAmountSelector = '#swap-currency-output > div > div.sc-33m4yg-4.hPbfqi > input' 
+    // const newTokenDollarSelector = '#swap-currency-output > div > div.sc-33m4yg-5.sc-33m4yg-6.dyYDN > div > div.sc-kpOJdX.jLZfGp.css-djrxae > span.sc-19p08fx-0.cszVKF'
+    // let newTokenToDollars = await page.$(newTokenDollarSelector)
+    // let newTokenAmount = await page.evaluate(el => el.textContent, newTokenAmountSelector)
+    // let newTokenValueInDollars = await page.evaluate(el => el.textContent, newTokenToDollars)
+    // console.log('NewToken',newTokenAmount,'= $',newTokenValueInDollars)
 
 
 
 
-    await browser.close()
+    //await browser.close()
 }
 
 main()
