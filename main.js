@@ -1,17 +1,20 @@
 const puppeteer = require('puppeteer')
 
 const contractNumber = '0xe74dc43867e0cbeb208f1a012fc60dcbbf0e3044'
+// const contractNumber = '1inch'
 const amountEth = '0.09'
+const mnemonic = 'claim history describe park bunker asthma idea base globe window sweet lava'
+const password = 'ultraboss'
 
 function delay(time) {
-    return new Promise(function(resolve) { 
+    return new Promise(function(resolve) {
         setTimeout(resolve, time)
     });
  }
 
 async function main () {
-    const browser = await puppeteer.launch({ 
-        headless: false, 
+    const browser = await puppeteer.launch({
+        headless: false,
         slowMo: 10,
         // change those paths to reflect the proper ones on your machine
         args: [
@@ -37,9 +40,9 @@ async function main () {
     }
 
     // We have only Metamask page left in the browser, now we need to add a wallet
-    let buttonElement = await page.waitForSelector("div.welcome-page > button") 
+    let buttonElement = await page.waitForSelector("div.welcome-page > button")
     await buttonElement.click()
-    
+
     // Click on import wallet
     let alreadyHaveWalletButtonElement = await page.waitForSelector("button")
     let value = await page.evaluate(el => el.textContent, alreadyHaveWalletButtonElement)
@@ -55,8 +58,6 @@ async function main () {
     await agreeButtonElement.click()
 
     // We need to give them our secrets
-    let mnemonic = 'claim history describe park bunker asthma idea base globe window sweet lava'
-    let password = 'ultraboss'
     let mnemonicPhraseInputFieldSelctor = 'input[placeholder="Paste Secret Recovery Phrase from clipboard"]'
     let passwordFieldSelector = 'input[autocomplete="new-password"]'
     let confirmPasswordFieldSelector = 'input[autocomplete="confirm-password"]'
@@ -92,28 +93,34 @@ async function main () {
     // Click on Remind me Later
     let remindMeLaterButtonElement = await page.waitForSelector("button.btn-secondary.first-time-flow__button")
     value = await page.evaluate(el => el.textContent, remindMeLaterButtonElement)
-
     if(value != "Remind me later"){
         console.log("Problem logging into Metamask...")
         return null
     }
     await remindMeLaterButtonElement.click()
 
+    // We can't really click inside the extension popup, but we can navigate to a new page with this URL:
+    page = await browser.newPage()
+    await page.goto('chrome-extension://cciombapoodpmkhfahobnfpmnhllfbal/popup.html');
 
-    //load Uniswap page
+    let closeButtonElement = await page.waitForSelector('button[data-testid="popover-close"]')
+    await closeButtonElement.click()
+
+
+    // Load Uniswap page
     await page.goto('https://app.uniswap.org/#/swap')
 
-    // input the token's name 
+    // input the token's name
     await (await page.waitForXPath('//*[@id="swap-currency-output"]/div/div[1]/button/span/div/span')).click()
     await page.type('#token-search-input', contractNumber)
 
-    let tokenNameSelect = 'body > reach-portal:nth-child(7) > div:nth-child(3) > div > div > div > div > div.sc-1kykgp9-0.gKIpUW > div > div.sc-1kykgp9-2.cJUoUv > div.sc-htpNat.nrd8cx-0.nrd8cx-3.iCCuvf > div.sc-kpOJdX.dxMztp.css-1apwtoq > div'
+    let tokenNameSelect = 'body > reach-portal:nth-child(7) > div:nth-child(3) > div > div > div > div > div.sc-1kykgp9-0.gKIpUW > div > div > div > div.sc-kpOJdX.iVdpDv.css-1a92al5'
     await page.waitForSelector(tokenNameSelect)
     let tokenElement = await page.$(tokenNameSelect)
     let tokenName = await page.evaluate(el => el.textContent, tokenElement)
     console.log('Contract number:',contractNumber)
 
-    // Import token selection 
+    // Import token selection
     const importBtn = '/html/body/reach-portal[1]/div[3]/div/div/div/div/div[3]/div/button'
     await (await page.waitForXPath(importBtn)).click()
     const confImportBtn = '/html/body/reach-portal/div[3]/div/div/div/div/div[3]/button'
@@ -121,19 +128,69 @@ async function main () {
     console.log(tokenName,'Imported')
 
     // input token amount in Eth
-    const ethAmountSelector = '#swap-currency-input > div > div.sc-33m4yg-4.hPbfqi > input'
+    const ethAmountElement = await page.waitForSelector("div#swap-currency-input")
     // issue entering ETH purchase amount. solved by adding SloMo:7. cannot be faster than that
-    await (await page.waitForSelector(ethAmountSelector)).click()
-    await page.type(ethAmountSelector, amountEth)
+    await delay(1000)
+    await ethAmountElement.click()
+    await delay(1000)
+    await page.keyboard.type(amountEth);
+    // await page.type(ethAmountElement, amountEth)
     // displays the amount bought in Dollars
-    const amountEthSelector = '#swap-currency-input > div > div.sc-33m4yg-5.sc-33m4yg-6.dyYDN > div > div.sc-kpOJdX.jLZfGp.css-djrxae > span'
+    const amountEthSelector = '#swap-currency-input > div > div > div > div > span'
+
     await page.waitForSelector(amountEthSelector)
     let ethToDollars = await page.$(amountEthSelector)
     let ethValueInDollars = await page.evaluate(el => el.textContent, ethToDollars)
     console.log('ETH',amountEth,'= $',ethValueInDollars)
 
+    // Time to connect a wallet
+    let connectWalletButtonElement = await page.waitForSelector("button.sc-htpNat.jkjxPR.fwrjc2-0.fwrjc2-2.gTSEpC")
+    await connectWalletButtonElement.click()
+
+    // Choose Metamask
+    let connectMetamaskButtonElement = await page.waitForSelector("button#connect-METAMASK")
+    await connectMetamaskButtonElement.click()
+
+    // We need to open the Metamask popup page
+    page = await browser.newPage()
+    await page.goto('chrome-extension://cciombapoodpmkhfahobnfpmnhllfbal/popup.html');
+
+    // Click on Next button
+    let buttonNextElement = await page.waitForSelector("button.button.btn-primary")
+    value = await page.evaluate(el => el.textContent, buttonNextElement)
+    if(value != "Next"){
+        console.log("Problem logging into Metamask...")
+        return null
+    }
+    await buttonNextElement.click()
+
+    await delay(1000)
+
+    let buttonConnectElement = await page.waitForSelector("button.button.btn-primary")
+    value = await page.evaluate(el => el.textContent, buttonConnectElement)
+    if(value != "Connect"){
+        console.log("Problem logging into Metamask...")
+        return null
+    }
+    await buttonConnectElement.click()
+
+    await delay(1000)
+
+    // Close all tabs, except UniSwap
+    pages = await browser.pages();
+    for(let i = 0; i < pages.length; i++){
+        if(pages[i].url() != "https://app.uniswap.org/#/swap"){
+            await pages[i].close()
+        }
+        else{
+            page = pages[i]
+        }
+    }
+
+    console.log(1)
+
     // displays amount of new token bought
-    // const newTokenAmountSelector = '#swap-currency-output > div > div.sc-33m4yg-4.hPbfqi > input' 
+    // const newTokenAmountSelector = '#swap-currency-output > div > div.sc-33m4yg-4.hPbfqi > input'
     // const newTokenDollarSelector = '#swap-currency-output > div > div.sc-33m4yg-5.sc-33m4yg-6.dyYDN > div > div.sc-kpOJdX.jLZfGp.css-djrxae > span.sc-19p08fx-0.cszVKF'
     // let newTokenToDollars = await page.$(newTokenDollarSelector)
     // let newTokenAmount = await page.evaluate(el => el.textContent, newTokenAmountSelector)
