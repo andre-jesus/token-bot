@@ -4,7 +4,15 @@ const contractNumber = '0xe74dc43867e0cbeb208f1a012fc60dcbbf0e3044'
 const amountEth = '0.09'
 
 async function main () {
-    const browser = await puppeteer.launch({ headless: false, slowMo: 10})
+    const browser = await puppeteer.launch({ 
+        headless: false, 
+        slowMo: 10,
+        // change those paths to reflect the proper ones on your machine
+        args: [
+            '--disable-extensions-except=C:\\code\\external\\token-bot\\metamask-chrome',
+            '--load-extension=C:\\code\\external\\token-bot\\metamask-chrome',
+          ]
+    })
     const page = await browser.newPage()
 
     //load Uniswap page
