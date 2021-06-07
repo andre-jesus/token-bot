@@ -15,7 +15,7 @@ function delay(time) {
 async function main () {
     const browser = await puppeteer.launch({
         headless: false,
-        slowMo: 10,
+        // slowMo: 10,
         // change those paths to reflect the proper ones on your machine
         args: [
             '--disable-extensions-except=C:\\code\\external\\token-bot\\metamask-chrome',
@@ -68,9 +68,10 @@ async function main () {
     let passwordFieldSelector = 'input[autocomplete="new-password"]'
     let confirmPasswordFieldSelector = 'input[autocomplete="confirm-password"]'
 
-    await page.type(mnemonicPhraseInputFieldSelctor, mnemonic);
-    await page.type(passwordFieldSelector, password);
-    await page.type(confirmPasswordFieldSelector, password);
+    await page.waitForSelector(mnemonicPhraseInputFieldSelctor)
+    await page.type(mnemonicPhraseInputFieldSelctor, mnemonic)
+    await page.type(passwordFieldSelector, password)
+    await page.type(confirmPasswordFieldSelector, password)
 
     // Tick the text box that we have read the terms and bla bla
     let termsCheckboxElement = await page.waitForSelector('div.first-time-flow__checkbox.first-time-flow__terms')
@@ -203,11 +204,7 @@ async function main () {
     // let newTokenValueInDollars = await page.evaluate(el => el.textContent, newTokenToDollars)
     // console.log('NewToken',newTokenAmount,'= $',newTokenValueInDollars)
 
-
-
-
     //await browser.close()
 }
 
 main()
-
