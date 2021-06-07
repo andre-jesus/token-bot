@@ -15,7 +15,6 @@ function delay(time) {
 async function main () {
     const browser = await puppeteer.launch({
         headless: false,
-        // slowMo: 10,
         // change those paths to reflect the proper ones on your machine
         args: [
             '--disable-extensions-except=C:\\code\\external\\token-bot\\metamask-chrome',
@@ -25,7 +24,7 @@ async function main () {
     let page = await browser.newPage()
 
 
-    await delay(4000)
+    await delay(2000)
     // Metamask page should be loaded and asking for wallet info
 
     // Close all the empty tabs, leave only Metamask open to avoid confussion
@@ -84,7 +83,7 @@ async function main () {
     // You would think this would do but for some reason the page just hansg on loading forever, we need to force another page to open
     await page.goto(`chrome-extension://${extensionId}/home.html#initialize/unlock`)
     await page.goto(`chrome-extension://${extensionId}/home.html#initialize/unlock`)
-    await delay(4000)
+    await delay(500)
 
     // We need to type in our password again
     let currentPasswordFieldSelector = 'input[autocomplete="current-password"]'
@@ -128,8 +127,12 @@ async function main () {
     console.log('Contract number:',contractNumber)
 
     // Import token selection
+    await delay(2000)
     const importBtn = '/html/body/reach-portal[1]/div[3]/div/div/div/div/div[3]/div/button'
-    await (await page.waitForXPath(importBtn)).click()
+    let importButton = await page.waitForXPath(importBtn)
+    console.log('import button found')
+    await importButton.click()
+
     const confImportBtn = '/html/body/reach-portal/div[3]/div/div/div/div/div[3]/button'
     await (await page.waitForXPath(confImportBtn)).click()
     console.log(tokenName,'Imported')
@@ -137,9 +140,9 @@ async function main () {
     // input token amount in Eth
     const ethAmountElement = await page.waitForSelector("div#swap-currency-input")
     // issue entering ETH purchase amount. solved by adding SloMo:7. cannot be faster than that
-    await delay(1000)
+    await delay(500)
     await ethAmountElement.click()
-    await delay(1000)
+    await delay(500)
     await page.keyboard.type(amountEth);
     // await page.type(ethAmountElement, amountEth)
     // displays the amount bought in Dollars
