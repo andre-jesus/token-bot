@@ -1,13 +1,14 @@
 const puppeteer = require('puppeteer')
+require('dotenv').config()
 
 const contractNumber = '0xe74dc43867e0cbeb208f1a012fc60dcbbf0e3044'
 // const contractNumber = '1inch'
 const amountEth = '0.09'
-const mnemonic = 'claim history describe park bunker asthma idea base globe window sweet lava'
-const password = 'ultraboss'
+const mnemonic = process.env.MNEMONIC //'claim history describe park bunker asthma idea base globe window sweet lava'
+const password = process.env.PASSWORD //'ultraboss'
 
-const extensionPath = 'C:\\code\\external\\token-bot\\metamask-chrome'
-//const extensionPath = 'D:\\Documents - D\\bot\\token-bot\\metamask-chrome'
+//const extensionPath = 'C:\\code\\external\\token-bot\\metamask-chrome'
+const extensionPath ='D:\\Documents - D\\bot\\token-bot\\metamask-chrome'
 
 
 function delay(time) {
@@ -91,6 +92,7 @@ async function main () {
 
     // We need to type in our password again
     let currentPasswordFieldSelector = 'input[autocomplete="current-password"]'
+    await page.waitForSelector(currentPasswordFieldSelector)
     await page.type(currentPasswordFieldSelector, password);
 
     let unlockButtonElement = await page.waitForSelector("button.MuiButtonBase-root.MuiButton-root.MuiButton-contained.MuiButton-containedSizeLarge.MuiButton-sizeLarge.MuiButton-fullWidth")
