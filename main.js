@@ -39,6 +39,12 @@ async function main () {
         }
     }
 
+    // Extract the metamask extension ID from the URL
+    console.log(page.url())
+    var extensionId = page.url()
+                        .split('chrome-extension://')[1]
+                        .split('/home.html')[0]
+
     // We have only Metamask page left in the browser, now we need to add a wallet
     let buttonElement = await page.waitForSelector("div.welcome-page > button")
     await buttonElement.click()
@@ -75,8 +81,8 @@ async function main () {
     await importButtonElement.click()
 
     // You would think this would do but for some reason the page just hansg on loading forever, we need to force another page to open
-    await page.goto("chrome-extension://cciombapoodpmkhfahobnfpmnhllfbal/home.html#initialize/unlock")
-    await page.goto("chrome-extension://cciombapoodpmkhfahobnfpmnhllfbal/home.html#initialize/unlock")
+    await page.goto(`chrome-extension://${extensionId}/home.html#initialize/unlock`)
+    await page.goto(`chrome-extension://${extensionId}/home.html#initialize/unlock`)
     await delay(4000)
 
     // We need to type in our password again
@@ -101,7 +107,7 @@ async function main () {
 
     // We can't really click inside the extension popup, but we can navigate to a new page with this URL:
     page = await browser.newPage()
-    await page.goto('chrome-extension://cciombapoodpmkhfahobnfpmnhllfbal/popup.html');
+    await page.goto(`chrome-extension://${extensionId}/popup.html`);
 
     let closeButtonElement = await page.waitForSelector('button[data-testid="popover-close"]')
     await closeButtonElement.click()
@@ -153,7 +159,7 @@ async function main () {
 
     // We need to open the Metamask popup page
     page = await browser.newPage()
-    await page.goto('chrome-extension://cciombapoodpmkhfahobnfpmnhllfbal/popup.html');
+    await page.goto(`chrome-extension://${extensionId}/popup.html`);
 
     // Click on Next button
     let buttonNextElement = await page.waitForSelector("button.button.btn-primary")
