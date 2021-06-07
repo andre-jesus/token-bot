@@ -6,8 +6,8 @@ const amountEth = '0.09'
 const mnemonic = 'claim history describe park bunker asthma idea base globe window sweet lava'
 const password = 'ultraboss'
 
-//const extensionPath = 'C:\\code\\external\\token-bot\\metamask-chrome'
-const extensionPath = 'D:\\Documents - D\\bot\\token-bot\\metamask-chrome'
+const extensionPath = 'C:\\code\\external\\token-bot\\metamask-chrome'
+//const extensionPath = 'D:\\Documents - D\\bot\\token-bot\\metamask-chrome'
 
 
 function delay(time) {
@@ -124,7 +124,7 @@ async function main () {
     await (await page.waitForXPath('//*[@id="swap-currency-output"]/div/div[1]/button/span/div/span')).click()
     await page.type('#token-search-input', contractNumber)
 
-    let tokenNameSelect = 'body > reach-portal:nth-child(7) > div:nth-child(3) > div > div > div > div > div.sc-1kykgp9-0.gKIpUW > div > div > div > div.sc-kpOJdX.iVdpDv.css-1a92al5'
+    let tokenNameSelect = 'body > reach-portal:nth-child(8) > div:nth-child(3) > div > div > div > div > div.sc-1kykgp9-0.gKIpUW > div > div > div > div.sc-kpOJdX.iVdpDv.css-1a92al5'
     await page.waitForSelector(tokenNameSelect)
     let tokenElement = await page.$(tokenNameSelect)
     let tokenName = await page.evaluate(el => el.textContent, tokenElement)
