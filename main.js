@@ -6,7 +6,9 @@ const amountEth = '0.09'
 const mnemonic = 'claim history describe park bunker asthma idea base globe window sweet lava'
 const password = 'ultraboss'
 
-const extensionPath = 'C:\\code\\external\\token-bot\\metamask-chrome'
+//const extensionPath = 'C:\\code\\external\\token-bot\\metamask-chrome'
+const extensionPath = 'D:\\Documents - D\\bot\\token-bot\\metamask-chrome'
+
 
 function delay(time) {
     return new Promise(function(resolve) {
