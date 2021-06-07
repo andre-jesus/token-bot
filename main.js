@@ -203,6 +203,13 @@ async function main () {
 
     console.log(1)
 
+    let tradeButtonElement = await page.waitForSelector('#swap-page > div > div.sc-hqyNC.kqJKQb > div > div')
+    value = await page.evaluate(el => el.textContent, tradeButtonElement)
+    if(value == "Insufficient liquidity for this trade."){
+        let v2ButtonElement = await page.waitForSelector('#swap-page > div > div.sc-htpNat.nrd8cx-0.dMmNk > div > a > span.sc-kAzzGY.bKBQNw > div')
+        v2ButtonElement.click();    
+    }
+
     // displays amount of new token bought
     // const newTokenAmountSelector = '#swap-currency-output > div > div.sc-33m4yg-4.hPbfqi > input'
     // const newTokenDollarSelector = '#swap-currency-output > div > div.sc-33m4yg-5.sc-33m4yg-6.dyYDN > div > div.sc-kpOJdX.jLZfGp.css-djrxae > span.sc-19p08fx-0.cszVKF'
