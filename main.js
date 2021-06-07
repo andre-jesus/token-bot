@@ -6,6 +6,8 @@ const amountEth = '0.09'
 const mnemonic = 'claim history describe park bunker asthma idea base globe window sweet lava'
 const password = 'ultraboss'
 
+const extensionPath = 'C:\\code\\external\\token-bot\\metamask-chrome'
+
 function delay(time) {
     return new Promise(function(resolve) {
         setTimeout(resolve, time)
@@ -17,8 +19,8 @@ async function main () {
         headless: false,
         // change those paths to reflect the proper ones on your machine
         args: [
-            '--disable-extensions-except=C:\\code\\external\\token-bot\\metamask-chrome',
-            '--load-extension=C:\\code\\external\\token-bot\\metamask-chrome',
+            `--disable-extensions-except=${extensionPath}`,
+            `--load-extension=${extensionPath}`,
           ]
     })
     let page = await browser.newPage()
